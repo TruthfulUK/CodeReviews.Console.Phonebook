@@ -2,10 +2,12 @@
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Phonebook.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -43,6 +45,27 @@ namespace Phonebook.Migrations
                         principalTable: "Categories",
                         principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "CategoryId", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Unassigned" },
+                    { 2, "Family" },
+                    { 3, "Friends" },
+                    { 4, "Work" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Contacts",
+                columns: new[] { "Id", "CategoryId", "Email", "Name", "PhoneNumber" },
+                values: new object[,]
+                {
+                    { 1, 3, "", "John Smith", "0800 12 3456" },
+                    { 2, 2, "", "Jane Doe", "07 1234 567890" },
+                    { 3, 1, "", "Jane Smith", "555 123 4567" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -11,8 +11,8 @@ using Phonebook.Data;
 namespace Phonebook.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250907001729_Initial")]
-    partial class Initial
+    [Migration("20250910210341_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,28 @@ namespace Phonebook.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            Name = "Unassigned"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            Name = "Family"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            Name = "Friends"
+                        },
+                        new
+                        {
+                            CategoryId = 4,
+                            Name = "Work"
+                        });
                 });
 
             modelBuilder.Entity("Phonebook.Models.Contact", b =>
@@ -69,6 +91,32 @@ namespace Phonebook.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Contacts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 3,
+                            Email = "",
+                            Name = "John Smith",
+                            PhoneNumber = "0800 12 3456"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 2,
+                            Email = "",
+                            Name = "Jane Doe",
+                            PhoneNumber = "07 1234 567890"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 1,
+                            Email = "",
+                            Name = "Jane Smith",
+                            PhoneNumber = "555 123 4567"
+                        });
                 });
 
             modelBuilder.Entity("Phonebook.Models.Contact", b =>

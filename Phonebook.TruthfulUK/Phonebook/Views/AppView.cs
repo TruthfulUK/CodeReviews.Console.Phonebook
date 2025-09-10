@@ -1,35 +1,69 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Phonebook.Data;
-using Phonebook.Models;
+﻿using Phonebook.Enums;
+using Phonebook.Helpers;
+using Phonebook.Services;
+using Spectre.Console;
 
 namespace Phonebook.Views;
 internal class AppView
 {
-    private AppDbContext _db { get; set; }
+    private readonly ContactService _contacts;
+
     public AppView()
     {
-        _db = new AppDbContext();
+        _contacts = new ContactService();
     }
+
     public void Run()
     {
-        _db.Database.Migrate();
-
         while (true)
         {
+            Console.Clear();
 
-            Console.WriteLine("Phonebook App");
+            Display.DisplayHeader("Main Menu");
 
-            List<Contact> contacts = _db.Contacts.Include(c => c.Category).ToList();
+            var mainMenuOptions = Display.GetMenuOptions<MainMenu>();
+            var mainMenuChoice = Display.SelectionPrompt(mainMenuOptions);
 
-            foreach (var c in contacts)
+            switch (mainMenuChoice)
             {
-                Console.WriteLine($"{c.Name} - {c.Category.Name}: {c.PhoneNumber} | {c.Email}");
+                case MainMenu.SearchContacts:
+                    break;
+                case MainMenu.ManageContacts:
+                    var contactsMenuOptions = Display.GetMenuOptions<ContactsMenu>();
+                    var contactsMenuChoice = Display.SelectionPrompt(contactsMenuOptions);
+                    switch (contactsMenuChoice)
+                    {
+                        case ContactsMenu.ViewContacts:
+                            break;
+                        case ContactsMenu.AddContact:
+                            break;
+                        case ContactsMenu.UpdateContact:
+                            break;
+                        case ContactsMenu.DeleteContact:
+                            break;
+                        case ContactsMenu.BackToMainMenu:
+                            break;
+                    }
+                    break;
+                case MainMenu.ManageCategories:
+                    var categoriesMenuOptions = Display.GetMenuOptions<CategoriesMenu>();
+                    var categoriesMenuChoice = Display.SelectionPrompt(categoriesMenuOptions);
+                    switch (categoriesMenuChoice)
+                    {
+                        case CategoriesMenu.AddCategory:
+                            break;
+                        case CategoriesMenu.UpdateCategory:
+                            break;
+                        case CategoriesMenu.DeleteCategory:
+                            break;
+                        case CategoriesMenu.BackToMainMenu:
+                            break;
+                    }
+                    break;
+                case MainMenu.ExitApplication:
+                    Environment.Exit(0);
+                    break;
             }
-
-            Console.ReadLine();
-
-            _db.Dispose();
-            Environment.Exit(0);
         }
     }
 }
