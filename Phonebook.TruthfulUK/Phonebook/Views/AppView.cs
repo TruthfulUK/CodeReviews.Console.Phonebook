@@ -34,6 +34,7 @@ internal class AppView
                     switch (contactsMenuChoice)
                     {
                         case ContactsMenu.ViewContacts:
+                            _contacts.ViewContacts();
                             break;
                         case ContactsMenu.AddContact:
                             _contacts.AddContact();

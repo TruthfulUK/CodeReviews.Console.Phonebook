@@ -19,12 +19,6 @@ internal class AppDbContext : DbContext
             new Category { Name = "Friends", CategoryId = 3 },
             new Category { Name = "Work", CategoryId = 4 }
         );
-
-        modelBuilder.Entity<Contact>().HasData(
-            new Contact { Id = 1, Name = "John Smith", PhoneNumber = "0800 12 3456", CategoryId = 3 },
-            new Contact { Id = 2, Name = "Jane Doe", PhoneNumber = "07 1234 567890", CategoryId = 2  },
-            new Contact { Id = 3,  Name = "Jane Smith", PhoneNumber = "555 123 4567", CategoryId = 1 }
-        );
     }
 
     public DbSet<Contact> Contacts { get; set; }
