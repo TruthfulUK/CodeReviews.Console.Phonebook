@@ -36,10 +36,13 @@ internal class AppView
                         case ContactsMenu.ViewContacts:
                             break;
                         case ContactsMenu.AddContact:
+                            _contacts.AddContact();
                             break;
                         case ContactsMenu.UpdateContact:
+                            _contacts.UpdateContact();
                             break;
                         case ContactsMenu.DeleteContact:
+                            _contacts.DeleteContact();
                             break;
                         case ContactsMenu.BackToMainMenu:
                             break;

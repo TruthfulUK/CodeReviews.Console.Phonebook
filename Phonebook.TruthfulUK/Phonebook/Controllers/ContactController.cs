@@ -11,6 +11,7 @@ internal class ContactController
             Console.WriteLine($"{contact.Name} being processed");
             db.Contacts.Add(contact);
             db.SaveChanges();
+            Console.WriteLine($"{contact.Name} added");
         }
     }
 }
