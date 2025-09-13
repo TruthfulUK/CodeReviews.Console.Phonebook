@@ -31,7 +31,13 @@ internal static class Seeding
                     Name = "Manager John",
                     PhoneNumber = "111 456 789",
                     Email = "john@fakecompany.fake",
-                    CategoryId = 4 }
+                    CategoryId = 4 },
+                new Contact
+                {
+                    Name = "Aaron Swanson",
+                    PhoneNumber = "+42 232 345 0933",
+                    Email = "aa-ron.swanson@doesnotexist.dne",
+                    CategoryId = 1 }
             };
 
             db.Contacts.AddRange(data);

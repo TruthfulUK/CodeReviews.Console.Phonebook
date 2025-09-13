@@ -1,17 +1,21 @@
 ﻿using Phonebook.Controllers;
+using Phonebook.Enums;
 using Phonebook.Helpers;
 using Phonebook.Models;
-using Phonebook.Enums;
 using Spectre.Console;
 
 namespace Phonebook.Services;
 internal class ContactService
 {
     private readonly ContactController _contacts;
+    private readonly CategoryController _categories;
+    private readonly List<int> _validRowIds;
 
     public ContactService()
     {
         _contacts = new ContactController();
+        _categories = new CategoryController();
+        _validRowIds = new List<int>();
     }
 
     public void AddContact()
@@ -42,12 +46,68 @@ internal class ContactService
 
     internal void DeleteContact()
     {
-        throw new NotImplementedException();
+        Display.DisplayHeader("Delete Contact");
+
+        ViewContacts(viewOnly: false);
+
+        int id = Validation.ValidateRowId(_validRowIds);
+
+        if (id == 0) return;
+
+        try
+        {
+            _contacts.DeleteContact(id);
+            AnsiConsole.MarkupLine($"[green]Success:[/] Contact has been deleted.");
+        }
+        catch (Exception ex)
+        {
+            AnsiConsole.MarkupLine($"[red]Error:[/] Could not delete contact - {ex.Message}");
+        }
+
+        Display.PressKeyToContinue();
     }
 
     internal void UpdateContact()
     {
-        throw new NotImplementedException();
+
+        Display.DisplayHeader("Update Contact");
+
+        ViewContacts(viewOnly: false);
+
+        int id = Validation.ValidateRowId(_validRowIds);
+        if (id == 0) return;
+
+        Contact contact = _contacts.SelectContactById(id);
+
+        Display.DisplayHeader($"Updating Details for '{contact.Name}'");
+
+        var updateOptions = Display.GetMenuOptions<UpdateValue>();
+        var updateChoice = Display.SelectionPrompt(updateOptions);
+
+        switch (updateChoice)
+        {
+            case UpdateValue.UpdateName:
+                string newName = Validation.ValidateInput(
+                    $"Enter Updated Name for {contact.Name}: ", 
+                    InputType.NonEmpty);
+                _contacts.UpdateContactName(id, newName);
+            break;
+            case UpdateValue.UpdateNumber:
+                string newNumber = Validation.ValidateInput(
+                    $"Enter New Number for {contact.Name}: ",
+                    InputType.PhoneNumber);
+                _contacts.UpdatePhoneNumber(id, newNumber);
+            break;
+            case UpdateValue.UpdateEmail:
+                string newEmail = Validation.ValidateInput(
+                    $"Enter New Email for {contact.Name}: ",
+                    InputType.PhoneNumber);
+                _contacts.UpdateEmail(id, newEmail);
+            break;
+            case UpdateValue.UpdateCategory:
+                break;
+        }
+
     }
 
     internal void ViewContacts(bool viewOnly = true)
@@ -66,21 +126,26 @@ internal class ContactService
 
         var contactTable = new Table();
         contactTable
+            .AddColumn("[white on blue] ID [/]")
             .AddColumn("[white on blue] Contact Name [/]")
-            .AddColumn("[white on blue] Contact Category [/]")
-            .AddColumn("[white on blue] Contact Phone # [/]")
-            .AddColumn("[white on blue] Contact Email [/]")
+            .AddColumn("[white on blue] Category [/]")
+            .AddColumn("[white on blue] Phone # [/]")
+            .AddColumn("[white on blue] Email [/]")
             .ShowRowSeparators()
             .Border(TableBorder.Horizontal)
             .Expand();
 
+        _validRowIds.Clear();
+
         foreach (Contact contact in contacts)
         {
             contactTable.AddRow(
+                $"{contact.Id}",
                 $"{contact.Name}",
                 $"{contact.Category.Name}",
                 $"{contact.PhoneNumber}",
                 $"{contact.Email}");
+            _validRowIds.Add(contact.Id);
         }
 
         AnsiConsole.Write(contactTable);

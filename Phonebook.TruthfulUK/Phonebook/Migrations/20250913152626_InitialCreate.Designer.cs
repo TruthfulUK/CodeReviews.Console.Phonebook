@@ -11,8 +11,8 @@ using Phonebook.Data;
 namespace Phonebook.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250912232544_SeperateContactSeeding")]
-    partial class SeperateContactSeeding
+    [Migration("20250913152626_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -14,6 +14,22 @@ internal static class Validation
         );
     }
 
+    public static int ValidateRowId(List<int> rowIds)
+    {
+        rowIds.Add(0);
+        var inputId = AnsiConsole.Prompt(
+            new TextPrompt<int>("Enter an ID # from the above table or '0' to exit: ")
+            .Validate(input =>
+            {
+                return rowIds.Contains(input)
+                ? ValidationResult.Success()
+                : ValidationResult.Error("\n[red]Invalid ID # - please enter an ID # from the table displayed above or '0' to exit[/]\n");
+            })
+        );
+
+        return inputId;
+    }
+
     private static ValidationResult Validate(InputType inputType, string text)
     {
         switch (inputType)
@@ -31,7 +47,7 @@ internal static class Validation
                 ? ValidationResult.Error("[red]Enter a valid phone (digits only or +countrycode, 8–15 digits).[/]")
                 : ValidationResult.Success();
             default:
-                return ValidationResult.Error("[red] Unsupported input type.[/]");
+                return ValidationResult.Error("[red]Unsupported input type.[/]");
         }
     }
 

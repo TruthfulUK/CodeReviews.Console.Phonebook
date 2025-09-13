@@ -58,16 +58,6 @@ namespace Phonebook.Migrations
                     { 4, "Work" }
                 });
 
-            migrationBuilder.InsertData(
-                table: "Contacts",
-                columns: new[] { "Id", "CategoryId", "Email", "Name", "PhoneNumber" },
-                values: new object[,]
-                {
-                    { 1, 3, "", "John Smith", "0800 12 3456" },
-                    { 2, 2, "", "Jane Doe", "07 1234 567890" },
-                    { 3, 1, "", "Jane Smith", "555 123 4567" }
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Contacts_CategoryId",
                 table: "Contacts",
