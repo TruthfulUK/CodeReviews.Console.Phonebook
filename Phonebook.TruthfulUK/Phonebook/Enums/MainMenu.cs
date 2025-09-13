@@ -3,8 +3,8 @@
 namespace Phonebook.Enums;
 internal enum MainMenu
 {
-    [Display(Name = "Search Contacts")]
-    SearchContacts,
+    [Display(Name = "View Contacts")]
+    ViewContacts,
 
     [Display(Name = "Manage Contacts")]
     ManageContacts,

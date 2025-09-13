@@ -3,9 +3,6 @@
 namespace Phonebook.Enums;
 internal enum ContactsMenu
 {
-    [Display(Name = "View all Contacts")]
-    ViewContacts,
-
     [Display(Name = "Add a Contact")]
     AddContact,
 
