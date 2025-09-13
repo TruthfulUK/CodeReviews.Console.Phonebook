@@ -37,7 +37,7 @@ New Categories can be created in the "Manage Categories" menu. After a contact i
 
 # Resources Used
 - [Entity Framework Tutorial - Entity Framework Core](https://www.entityframeworktutorial.net/efcore/entity-framework-core.aspx)
-- [Microsoft Learn - Overview of Entity Framework Core)](https://learn.microsoft.com/en-us/ef/core/) 
+- [Microsoft Learn - Overview of Entity Framework Core](https://learn.microsoft.com/en-us/ef/core/) 
 - [Spectre Console Docs](https://spectreconsole.net/)
 - ChatGPT (models: 5, 4o)
 - Gemini (models: 2.5 Pro)
