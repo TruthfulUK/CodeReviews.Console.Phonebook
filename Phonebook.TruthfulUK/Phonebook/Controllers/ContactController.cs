@@ -5,7 +5,7 @@ using Phonebook.Models;
 namespace Phonebook.Controllers;
 internal class ContactController
 {
-    public void InsertContact(Contact contact)
+    internal void InsertContact(Contact contact)
     {
         using (var db = new AppDbContext())
         {
@@ -14,7 +14,7 @@ internal class ContactController
         }
     }
 
-    public void DeleteContact(int id)
+    internal void DeleteContact(int id)
     {
         using (var db = new AppDbContext())
         {
@@ -22,7 +22,7 @@ internal class ContactController
         }
     }
 
-    public void UpdateContactName(int id, string newName)
+    internal void UpdateContactName(int id, string newName)
     {
         using (var db = new AppDbContext())
         {
@@ -33,7 +33,7 @@ internal class ContactController
         }
     }
 
-    public void UpdatePhoneNumber(int id, string newNumber)
+    internal void UpdatePhoneNumber(int id, string newNumber)
     {
         using (var db = new AppDbContext())
         {
@@ -44,7 +44,7 @@ internal class ContactController
         }
     }
 
-    public void UpdateEmail(int id, string newEmail)
+    internal void UpdateEmail(int id, string newEmail)
     {
         using (var db = new AppDbContext())
         {
@@ -55,7 +55,18 @@ internal class ContactController
         }
     }
 
-    public List<Contact> SelectAllContacts()
+    internal void UpdateCategory(int id, int categoryId)
+    {
+        using (var db = new AppDbContext())
+        {
+            db.Contacts
+                .Where(c => c.Id == id)
+                .ExecuteUpdate(c => c.SetProperty(c => c.CategoryId, categoryId));
+            db.SaveChanges();
+        }
+    }
+
+    internal List<Contact> SelectAllContacts()
     {
         using (var db = new AppDbContext())
         {
@@ -63,7 +74,7 @@ internal class ContactController
         }
     }
 
-    public Contact SelectContactById(int id)
+    internal Contact SelectContactById(int id)
     {
         using (var db = new AppDbContext())
         {

@@ -7,6 +7,7 @@ var app = new AppView();
 
 using (db)
 {
+    db.Database.EnsureDeleted();
     db.Database.Migrate();
 }
 

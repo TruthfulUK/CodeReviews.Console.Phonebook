@@ -18,27 +18,43 @@ internal class ContactService
         _validRowIds = new List<int>();
     }
 
-    public void AddContact()
+    internal void AddContact()
     {
         Display.DisplayHeader("Add a New Contact");
 
-        var c = new Contact();
+        var newContact = new Contact();
 
-        c.Name = Validation.ValidateInput(
+        newContact.Name = Validation.ValidateInput(
             "Enter a Contact Name: ", InputType.NonEmpty);
-        c.PhoneNumber = Validation.ValidateInput(
-            $"Enter {c.Name}'s Number: ", InputType.PhoneNumber);
-        c.Email = Validation.ValidateInput(
-            $"Enter {c.Name}'s Email: ", InputType.Email);
+        newContact.PhoneNumber = Validation.ValidateInput(
+            $"Enter {newContact.Name}'s Number: ", InputType.PhoneNumber);
+        newContact.Email = Validation.ValidateInput(
+            $"Enter {newContact.Name}'s Email: ", InputType.Email);
+
+        bool confirmCategory = AnsiConsole.Prompt(
+            new ConfirmationPrompt("Do you want to assign this contact a Category?")
+        );
+
+        if (confirmCategory)
+        {
+            List<Category> categories = _categories.SelectAllCategories();
+            var selectedCategory = AnsiConsole.Prompt(
+            new SelectionPrompt<Category>()
+                .Title($"Select Category to assign to {newContact.Name}: ")
+                .UseConverter(c => c.Name)
+                .AddChoices(categories));
+
+            newContact.CategoryId = selectedCategory.CategoryId;
+        }
 
         try
         {
-            _contacts.InsertContact(c);
-            AnsiConsole.MarkupLine($"[Green]Success:[/] {c.Name} has been successfully added to your contact list!");
+            _contacts.InsertContact(newContact);
+            AnsiConsole.MarkupLine($"[Green]Success:[/] {newContact.Name} has been successfully added to your contact list!");
         }
         catch (Exception ex)
         {
-            AnsiConsole.MarkupLine($"[red]Error:[/] Could not add contact {c.Name}: {ex.Message}");
+            AnsiConsole.MarkupLine($"[red]Error:[/] Could not add contact {newContact.Name}: {ex.Message}");
         }
 
         Display.PressKeyToContinue();
@@ -105,7 +121,16 @@ internal class ContactService
                 _contacts.UpdateEmail(id, newEmail);
             break;
             case UpdateValue.UpdateCategory:
-                break;
+                List<Category> categories = _categories.SelectAllCategories();
+
+                var selectedCategory = AnsiConsole.Prompt(
+                    new SelectionPrompt<Category>()
+                    .Title("Select a Category: ")
+                    .UseConverter(c => c.Name)
+                    .AddChoices(categories));
+
+                _contacts.UpdateCategory(id, selectedCategory.CategoryId);
+            break;
         }
 
     }
